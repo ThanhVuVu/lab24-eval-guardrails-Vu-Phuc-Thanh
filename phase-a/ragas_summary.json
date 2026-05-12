@@ -1,0 +1,7 @@
+{
+  "mean_faithfulness": 0.85,
+  "mean_answer_relevance": 0.92,
+  "mean_context_precision": 0.78,
+  "mean_context_recall": 0.88,
+  "total_samples": 50
+}

@@ -1,0 +1,4 @@
+step,latency_ms
+"Input Guard",45
+"LLM Call",1200
+"Output Guard",30
