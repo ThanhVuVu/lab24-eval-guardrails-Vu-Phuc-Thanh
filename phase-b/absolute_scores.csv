@@ -1,2 +1,31 @@
-sample_id,score,explanation
-1,5,"Perfect alignment with context."
+accuracy,relevance,conciseness,helpfulness,overall,question
+5,5,5,4,4.75,How do we use PII Detection to keep user info safe?
+5,5,4,5,4.75,What LLM guardrails do to keep user safe and on topic?
+5,5,5,5,5.0,What are the different types of LLM Guardrails used to ensure safety and accuracy?
+4,5,4,5,4.5,What is the purpose of Topic Validation in LLM Guardrails and Safety?
+5,5,5,5,5.0,What is the purpose of Adversarial Detection in LLM Guardrails?
+5,5,5,5,5.0,What Presidio do in safety?
+5,5,4,4,4.5,What are the primary functions of LLM Guardrails in ensuring the safety and accuracy of AI systems?
+5,5,4,5,4.75,What are Safety Classifiers used for in LLM Guardrails?
+4,5,4,5,4.5,What is Adverserial Detection in LLM guardrails?
+5,5,5,5,5.0,What is the purpose of Llama Guard in the context of LLM safety measures?
+5,5,4,5,4.75,"What role do Safety Classifiers play in ensuring the safety and security of LLM systems, and how do they contribute to the overall effectiveness of guardrails?"
+5,5,5,5,5.0,What Adversarial Detection do?
+5,5,4,4,4.5,What are the primary functions of guardrails in relation to LLMs?
+5,5,5,5,5.0,How RAG help LLMs?
+5,5,5,5,5.0,How does Retrieval-Augmented Generation help LLMs get access to new info without retraining?
+5,5,4,5,4.75,"How does Retrieval-Augmented Generation (RAG) enhance the performance of LLMs, and what are its key benefits?"
+5,5,4,5,4.75,How do LLMs benefit from Retrieval-Augmented Generation?
+5,5,5,5,5.0,What is Retrieval-Augmented Generation (RAG)?
+5,5,5,5,5.0,"How do LLMs get access to new informations without needing to be retrained all the time, and what are the main parts of this process?"
+5,5,4,5,4.75,How does Retrieval-Augmented Generation (RAG) improve the accuracy of large language models?
+5,5,5,5,5.0,"How does Retrieval-Augmented Generation (RAG) enhance the performance of large language models, and what are its key components and benefits?"
+5,5,5,5,5.0,Whats is RAG and how does it help LLMs?
+5,5,4,5,4.75,Whats the benifit of using Retreival-Augmented Generation in LLMs?
+5,5,5,5,5.0,How does Retrieval-Augmented Generation (RAG) work and what are its benefits for large language models?
+5,5,4,5,4.75,Whats retrival augumented genration?
+5,5,5,5,5.0,Whats RAG in LLMs?
+5,5,5,5,5.0,"How does retrival-augmented generation tecnique help LLMs to acess specifik, up-to-date informations?"
+5,5,4,5,4.75,"How does Retrieval-Augmented Generation (RAG) improve the performance of Large Language Models (LLMs) by providing access to specific, up-to-date information?"
+5,5,5,5,5.0,What LLM guardrails keep user info safe?
+5,5,5,5,5.0,How RAG help LLMs?

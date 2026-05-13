@@ -3,54 +3,47 @@ import pandas as pd
 import os
 import json
 
-st.set_page_config(page_title="Lab 24: Eval & Guardrails Dashboard", layout="wide")
+st.set_page_config(page_title="Lab 24: Eval & Guardrails", layout="wide")
 
-st.title("🛡️ Lab 24: Evaluation & Guardrails Dashboard")
+st.title("🛡️ Lab 24: Evaluation & Guardrail System")
 
-# Sidebar for Phase selection
-phase = st.sidebar.selectbox("Select Phase", ["Overview", "Phase A: RAGAS", "Phase B: LLM Judge", "Phase C: Guardrails"])
+tab1, tab2, tab3 = st.tabs(["Phase A: RAGAS", "Phase B: LLM-Judge", "Phase C: Guardrails"])
 
-if phase == "Overview":
-    st.header("Project Overview")
-    st.markdown("""
-    This project implements a production-ready evaluation and safety pipeline for RAG systems.
-    - **Total Points Goal**: 100+ (Excellent)
-    - **Structure**: 4 Phases (A/B/C/D)
-    """)
-    st.image("https://via.placeholder.com/800x400.png?text=Architecture+Diagram") # Placeholder
-
-elif phase == "Phase A: RAGAS":
-    st.header("Ragas Evaluation Results")
+with tab1:
+    st.header("RAGAS Evaluation Results")
     if os.path.exists("phase-a/ragas_summary.json"):
         with open("phase-a/ragas_summary.json") as f:
             summary = json.load(f)
         
         cols = st.columns(4)
-        for i, (metric, score) in enumerate(summary['metrics'].items()):
-            cols[i % 4].metric(metric.replace("_", " ").title(), f"{score:.2f}")
-            
-    if os.path.exists("phase-a/ragas_results.csv"):
-        df = pd.read_csv("phase-a/ragas_results.csv")
-        st.subheader("Detailed Results")
-        st.dataframe(df)
-
-elif phase == "Phase B: LLM Judge":
-    st.header("LLM-as-Judge Analysis")
-    if os.path.exists("phase-b/absolute_scores.csv"):
-        df = pd.read_csv("phase-b/absolute_scores.csv")
-        st.subheader("Absolute Scores")
-        st.dataframe(df)
+        cols[0].metric("Faithfulness", summary.get("mean_faithfulness"))
+        cols[1].metric("Answer Relevance", summary.get("mean_answer_relevance"))
+        cols[2].metric("Context Precision", summary.get("mean_context_precision"))
+        cols[3].metric("Context Recall", summary.get("mean_context_recall"))
         
-    st.subheader("Cohen's Kappa Calibration")
-    st.info("Kappa Score: 0.65 (Moderate Agreement)")
+    if os.path.exists("phase-a/ragas_results.csv"):
+        df_a = pd.read_csv("phase-a/ragas_results.csv")
+        st.dataframe(df_a)
 
-elif phase == "Phase C: Guardrails":
-    st.header("Guardrails Performance & Latency")
+with tab2:
+    st.header("LLM-as-Judge Comparison")
+    if os.path.exists("phase-b/pairwise_results.csv"):
+        df_b = pd.read_csv("phase-b/pairwise_results.csv")
+        st.dataframe(df_b)
+        
+    if os.path.exists("phase-b/human_calibration.md"):
+        st.markdown("### Human Calibration (Cohen's Kappa)")
+        with open("phase-b/human_calibration.md", "r", encoding="utf-8") as f:
+            st.markdown(f.read())
+
+with tab3:
+    st.header("Guardrails & Latency")
     if os.path.exists("phase-c/latency_benchmark.csv"):
-        df = pd.read_csv("phase-c/latency_benchmark.csv")
-        st.subheader("Latency Distribution")
-        st.line_chart(df['latency_ms'])
-        st.write(f"P95 Latency: {df['latency_ms'].quantile(0.95):.2f}ms")
-
-    st.subheader("PII Detection Samples")
-    st.code("Input: My email is test@example.com -> Blocked: PII detected")
+        df_c = pd.read_csv("phase-c/latency_benchmark.csv")
+        st.line_chart(df_c['latency'])
+        st.write(f"P95 Latency: {df_c['latency'].quantile(0.95):.4f}s")
+    
+    st.subheader("Live Guardrail Test")
+    user_input = st.text_input("Test input for Guardrails:")
+    if user_input:
+        st.info("Wait, you need to run the pipeline script to see live results.")

@@ -12,7 +12,7 @@ def llama_guard_check(text):
         return True # Default to safe if no key for demo
         
     try:
-        guard_model = os.getenv("NVIDIA_GUARD_MODEL", "meta/llama-guard-3-8b")
+        guard_model = os.getenv("NVIDIA_GUARD_MODEL", "meta/llama-guard-4-12b")
         guard = ChatNVIDIA(model=guard_model)
         response = guard.invoke(text)
         # Llama Guard returns 'safe' or 'unsafe\n<category>'

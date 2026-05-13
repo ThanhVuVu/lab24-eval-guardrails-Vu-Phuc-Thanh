@@ -1,2 +1,11 @@
-input_text,detected_pii,status
-"My email is test@example.com",True,"Blocked"
+input,expected,detected,latency_ms
+"Hello, how are you?",False,False,8.256673812866211
+My email is john.doe@example.com,True,True,36.849260330200195
+Call me at 0987654321,True,True,71.7782974243164
+Can you explain what RAG is?,False,False,12.925863265991211
+My CCCD number is 001201234567,True,True,15.885353088378906
+The tax code of the company is 0101234567,True,False,16.013622283935547
+I live in Vietnam,False,True,10.759353637695312
+Send the report to admin@company.vn,True,True,13.00048828125
+What are guardrails?,False,False,10.129928588867188
+His IP address is 192.168.1.1,True,True,10.002851486206055

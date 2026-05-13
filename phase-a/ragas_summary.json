@@ -1,7 +1,7 @@
 {
-  "mean_faithfulness": 0.85,
-  "mean_answer_relevance": 0.92,
-  "mean_context_precision": 0.78,
-  "mean_context_recall": 0.88,
+  "mean_faithfulness": 0.9097108652664209,
+  "mean_answer_relevance": 0.5598940082240349,
+  "mean_context_precision": 0.9999999999,
+  "mean_context_recall": 0.8983579638752052,
   "total_samples": 50
 }

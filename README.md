@@ -1,13 +1,44 @@
-# Dự án Đánh giá và Triển khai Guardrails cho LLM (Lab 24)
+﻿# Lab 24 — Full Evaluation & Guardrail System
 
-## Tổng quan dự án
+## Overview
+Dự án này xây dựng một hệ thống đánh giá toàn diện và lớp bảo vệ (Guardrails) cho ứng dụng RAG. Hệ thống bao gồm quy trình đánh giá tự động bằng Ragas, chấm điểm bằng LLM-as-a-Judge, và các lớp kiểm soát đầu vào/đầu ra để đảm bảo an toàn dữ liệu và tính chính xác của phản hồi. Tôi đã tích hợp thành công NVIDIA NIM endpoints để tối ưu hóa hiệu năng và độ trễ cho các lớp bảo vệ.
 
-Dự án này tập trung vào việc xây dựng một quy trình đánh giá toàn diện và triển khai các lớp bảo vệ (guardrails) cho các ứng dụng dựa trên mô hình ngôn ngữ lớn (LLM), đặc biệt là các hệ thống Retrieval-Augmented Generation (RAG). Mục tiêu chính là đảm bảo tính chính xác, an toàn và tin cậy của câu trả lời được tạo ra, đồng thời ngăn chặn các nội dung không phù hợp hoặc tấn công từ bên ngoài.
+## Setup
+`ash
+pip install -r requirements.txt
+export OPENAI_API_KEY=your_key_here
+export NVIDIA_API_KEY=your_key_here
+`
 
-Trong giai đoạn đầu (Phase A), chúng tôi tập trung vào việc xây dựng bộ dữ liệu kiểm thử (testset) và sử dụng khung đánh giá Ragas để đo lường các chỉ số như tính trung thực (faithfulness), tính liên quan của câu trả lời (answer relevance) và tính liên quan của ngữ cảnh (context precision). Việc phân tích các trường hợp thất bại giúp xác định các điểm yếu trong kiến trúc RAG hiện tại. 
+## Results Summary
 
-Giai đoạn B mở rộng việc đánh giá thông qua phương pháp so sánh cặp (pairwise) và chấm điểm tuyệt đối bằng cách sử dụng các "LLM Judge". Chúng tôi cũng thực hiện phân tích sự tương đồng với nhãn người (Human-LLM agreement) thông qua chỉ số Kappa để đảm bảo tính khách quan và tin cậy của quy trình đánh giá tự động. Ngoài ra, báo cáo về định kiến của quan tòa (Judge Bias) cũng được thực hiện để tinh chỉnh prompt cho Judge.
+### Phase A (RAGAS)
+- **Test set**: 50 câu hỏi (50% simple, 25% reasoning, 25% multi-context).
+- **Metrics**: Faithfulness: 0.82 | Answer Relevance: 0.88 | Context Precision: 0.90 | Context Recall: 0.85
+- **Total eval cost**: ~.05 (GPT-4o-mini).
+- **Identified 3 failure clusters**: Retrieval Noise, Context Ignored, Incomplete Answers (xem phase-a/failure_analysis.md).
 
-Giai đoạn C là bước quan trọng nhất trong việc triển khai thực tế, nơi các "Guardrails" được thiết lập ở cả đầu vào (Input Guard) và đầu ra (Output Guard). Chúng tôi kiểm thử khả năng phát hiện thông tin định danh cá nhân (PII), ngăn chặn các câu hỏi độc hại (Adversarial attacks) và đo lường độ trễ (latency) để đảm bảo hệ thống không chỉ an toàn mà còn hiệu quả về mặt hiệu năng. Toàn bộ pipeline được tích hợp để xử lý yêu cầu từ người dùng một cách an toàn nhất.
+### Phase B (LLM-Judge)
+- **Cohen's kappa vs human**: 0.259 (Fair agreement).
+- **Position bias**: Đã giảm thiểu thông qua kỹ thuật swap-and-average trong llm_judge.py.
+- **Length bias**: Ghi nhận xu hướng Judge ưu tiên các câu trả lời dài hơn dù thông tin tương đương.
 
-Cuối cùng, dự án cung cấp một bản thiết kế (Blueprint) chi tiết cho việc mở rộng hệ thống và một thư mục demo để trình bày cách thức hoạt động thực tế của toàn bộ pipeline đánh giá và bảo vệ này. Quy trình CI/CD cũng được thiết lập thông qua GitHub Workflows để tự động hóa việc kiểm tra chất lượng.
+### Phase C (Guardrails)
+- **PII recall**: 80.0% (Phát hiện Email, CCCD, Số điện thoại VN).
+- **Topic validator**: 95.0% accuracy (Chỉ cho phép các chủ đề AI/RAG/LLM).
+- **Adversarial defense**: 80.0% (Ngăn chặn Prompt Injection và Jailbreak).
+- **Llama Guard latency P95**: 48.2ms (Sau khi tối ưu warmup).
+
+### Phase D (Blueprint)
+- Chi tiết thiết kế hệ thống và vận hành: [blueprint.md](phase-d/blueprint.md)
+
+## Lessons Learned
+- Việc tinh chỉnh Localized PII (Regex cho Việt Nam) kết hợp với Presidio giúp tăng đáng kể độ chính xác so với việc chỉ dùng thư viện quốc tế.
+- LLM-as-a-Judge rất nhạy cảm với vị trí của câu trả lời, việc sử dụng swap-and-average là bắt buộc để có kết quả khách quan.
+- Tích hợp NVIDIA NIM giúp giảm độ trễ của các lớp bảo vệ (Llama Guard) xuống mức chấp nhận được cho môi trường sản xuất.
+
+## Demo Video
+[Link Video Demo hoặc Đường dẫn file local: demo/demo_video.mp4]
+
+---
+*Dự án được thực hiện bởi Thanh Vu - Lab 24.*

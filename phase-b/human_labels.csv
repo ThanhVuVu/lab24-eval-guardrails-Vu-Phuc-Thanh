@@ -1,2 +1,11 @@
-sample_id,human_score
-1,5
+sample_idx,human_label,confidence
+0,5,5
+1,4,4
+2,5,5
+3,3,5
+4,5,4
+5,4,3
+6,5,5
+7,5,4
+8,4,5
+9,3,4
